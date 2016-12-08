@@ -4,8 +4,8 @@ import PageItems from 'ember-cli-pagination/lib/page-items';
 import Validate from 'ember-cli-pagination/validate';
 
 export default Ember.Component.extend({
-  currentPageBinding: "content.page",
-  totalPagesBinding: "content.totalPages",
+  // currentPageBinding: "content.page",
+  // totalPagesBinding: "content.totalPages",
 
   hasPages: Ember.computed.gt('totalPages', 1),
 
@@ -13,7 +13,7 @@ export default Ember.Component.extend({
     const c = this.get('content');
     if (c && c.on) {
       c.on('invalidPage', (e) => {
-        this.sendAction('invalidPageAction',e);
+        this.sendAction('invalidPageAction', e);
       });
     }
   }),
@@ -43,7 +43,7 @@ export default Ember.Component.extend({
 
   //pageItemsBinding: "pageItemsObj.pageItems",
 
-  pageItems: Ember.computed("pageItemsObj.pageItems","pageItemsObj", function() {
+  pageItems: Ember.computed("pageItemsObj.pageItems", "pageItemsObj", function() {
     this.validate();
     return this.get("pageItemsObj.pageItems");
   }),
@@ -63,18 +63,22 @@ export default Ember.Component.extend({
     pageClicked: function(number) {
       Util.log("PageNumbers#pageClicked number " + number);
       this.set("currentPage", number);
-      this.sendAction('action',number);
+      this.sendAction('action', number);
     },
     incrementPage: function(num) {
       const currentPage = Number(this.get("currentPage")),
-           totalPages = Number(this.get("totalPages"));
+        totalPages = Number(this.get("totalPages"));
 
-      if(currentPage === totalPages && num === 1) { return false; }
-      if(currentPage <= 1 && num === -1) { return false; }
+      if (currentPage === totalPages && num === 1) {
+        return false;
+      }
+      if (currentPage <= 1 && num === -1) {
+        return false;
+      }
       this.incrementProperty('currentPage', num);
 
       const newPage = this.get('currentPage');
-      this.sendAction('action',newPage);
+      this.sendAction('action', newPage);
     }
   }
 });
